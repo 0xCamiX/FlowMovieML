@@ -10,5 +10,5 @@
              min_child_weight=None, missing=nan, monotone_constraints=None,
              multi_strategy=None, n_estimators=100, n_jobs=None,
              num_parallel_tree=None, random_state=None, ...)
-### Train Score: 0.9998156607151032
-### Test Score: 0.8479627311229706
+### Train Score: 0.9997986793518067
+### Test Score: 0.8414961397647858
