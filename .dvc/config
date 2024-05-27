@@ -1,4 +1,6 @@
 [core]
-    remote = dataset-track
+    remote = model-track
 ['remote "dataset-track"']
     url = azure://flow-movie-dataset-tracker/dataset
+['remote "model-track"']
+    url = azure://flow-movie-dataset-tracker/model
