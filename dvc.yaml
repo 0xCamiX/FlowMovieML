@@ -1,0 +1,14 @@
+stages:
+  preprocessing:
+    cmd: python src/preprocessing.py
+    deps:
+    - src/preprocessing.py
+    - src/utils/fetching.py
+    outs:
+    - dataset/clean_dataset.csv
+  train:
+    cmd: python src/train.py
+    deps:
+    - dataset/clean_dataset.csv
+    - src/train.py
+    - src/utils/model.py
