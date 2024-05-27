@@ -43,7 +43,7 @@ X_test = scaler.transform(X_test)
 
 model = Pipeline([
     ("imputer", SimpleImputer(missing_values=np.nan, strategy="mean")),
-    ("model", XGBRegressor(n_estimators=100))
+    ("models", XGBRegressor(n_estimators=100))
 ])
 
 results = cross_validate(model, X_train, y_train, cv=10, return_train_score=True)
@@ -60,12 +60,12 @@ logger.info("Test score: %s", test_score)
 model.fit(X_train, y_train)
 model.score(X_test, y_test)
 
-logger.info("Updating model")
+logger.info("Updating models")
 
 update_model(model)
 update_scaler(scaler)
 
-logger.info("Generating model report...")
+logger.info("Generating models report...")
 
 save_report(train_score, test_score, model)
 

@@ -11,4 +11,4 @@ stages:
     deps:
     - dataset/clean_dataset.csv
     - src/train.py
-    - src/utils/model.py
+    - src/utils/models.py

@@ -49,7 +49,7 @@ Next, add the remotes for dataset and model tracking:
 
 ```bash
 dvc remote add dataset-track azure://<container_name>/dataset
-dvc remote add model-track azure://<container_name>/model
+dvc remote add models-track azure://<container_name>/models
 ```
 
 Replace `<container_name>` with the name of the container in your Azure Storage account where you want to store the datasets and models.
@@ -63,8 +63,8 @@ dvc add dataset/financials.csv
 dvc add dataset/movies.csv
 dvc add dataset/opening_gross.csv
 
-dvc add model/model.pkl
-dvc add model/scaler.pkl
+dvc add models/models.pkl
+dvc add models/scaler.pkl
 ```
 
 This will create `.dvc` files for each dataset and model, which you can then push to the remotes:
