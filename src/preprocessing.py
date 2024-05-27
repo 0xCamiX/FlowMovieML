@@ -40,6 +40,8 @@ df = df[numeric_columns].drop(columns=['gross'])
 
 df = df.dropna()
 
+df = df.drop(columns=['Unnamed: 0'])
+
 df.to_csv('./dataset/clean_dataset.csv', index=False)
 
 logger.info("Datasets preprocessed successfully.")
