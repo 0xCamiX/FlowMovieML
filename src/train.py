@@ -6,6 +6,8 @@ import pandas as pd
 
 from utils.model import update_model
 from utils.model import update_scaler
+from utils.model import save_report
+from utils.model import plot_model_results
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -63,4 +65,12 @@ logger.info("Updating model")
 update_model(model)
 update_scaler(scaler)
 
-breakpoint()
+logger.info("Generating model report...")
+
+save_report(train_score, test_score, model)
+
+logger.info("Training completed.")
+
+y_true = y_test
+
+plot_model_results(y_true, model.predict(X_test))
