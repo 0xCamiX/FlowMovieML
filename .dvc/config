@@ -1,5 +1,6 @@
 [core]
     remote = dataset-track
+    autostage = true
 ['remote "dataset-track"']
     url = azure://flow-movie-dataset-tracker/dataset
 ['remote "model-track"']

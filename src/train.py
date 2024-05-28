@@ -43,10 +43,10 @@ X_test = scaler.transform(X_test)
 
 model = Pipeline([
     ("imputer", SimpleImputer(missing_values=np.nan, strategy="mean")),
-    ("models", XGBRegressor(n_estimators=101))
+    ("models", XGBRegressor(n_estimators=140))
 ])
 
-results = cross_validate(model, X_train, y_train, cv=11, return_train_score=True)
+results = cross_validate(model, X_train, y_train, cv=8, return_train_score=True)
 
 train_score = np.mean(results['train_score'])
 test_score = np.mean(results['test_score'])
