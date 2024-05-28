@@ -10,5 +10,3 @@ stages:
     cmd: python src/train.py
     deps:
     - dataset/clean_dataset.csv
-    - src/train.py
-    - src/utils/models.py

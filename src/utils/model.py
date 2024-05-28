@@ -8,11 +8,11 @@ from sklearn.preprocessing import StandardScaler
 
 
 def update_model(model: Pipeline) -> None:
-    dump(model, "./models/models.pkl")
+    dump(model, "./model/models.pkl")
 
 
 def update_scaler(scaler: StandardScaler) -> None:
-    dump(scaler, "./models/scaler.pkl")
+    dump(scaler, "./model/scaler.pkl")
 
 
 def save_report(train_score: float, test_score: float, model: Pipeline) -> None:
