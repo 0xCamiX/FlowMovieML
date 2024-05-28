@@ -33,7 +33,7 @@ data = pd.read_csv("./dataset/clean_dataset.csv")
 X = data.drop("worldwide_gross", axis=1)
 y = data["worldwide_gross"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
@@ -43,10 +43,10 @@ X_test = scaler.transform(X_test)
 
 model = Pipeline([
     ("imputer", SimpleImputer(missing_values=np.nan, strategy="mean")),
-    ("models", XGBRegressor(n_estimators=100))
+    ("models", XGBRegressor(n_estimators=101))
 ])
 
-results = cross_validate(model, X_train, y_train, cv=10, return_train_score=True)
+results = cross_validate(model, X_train, y_train, cv=11, return_train_score=True)
 
 train_score = np.mean(results['train_score'])
 test_score = np.mean(results['test_score'])
