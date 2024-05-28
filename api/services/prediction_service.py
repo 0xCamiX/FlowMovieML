@@ -1,6 +1,6 @@
-from api.config.utils import get_model
-from api.config.utils import get_scaler
-from api.config.utils import transform_dataframe
+from api.config.config import get_model
+from api.config.config import get_scaler
+from api.config.config import transform_dataframe
 from api.models.movie import MoviePredictionRequest
 
 
