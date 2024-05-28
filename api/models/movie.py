@@ -2,12 +2,12 @@ from pydantic import BaseModel
 
 
 class MoviePredictionRequest(BaseModel):
-    domestic_gross: int
-    production_budget: int
+    domestic_gross: float
+    production_budget: float
     title_year: float
     aspect_ratio: float
     duration: float
-    cast_total_facebook_likes: int
+    cast_total_facebook_likes: float
     budget: float
     imdb_score: float
     opening_gross: float
