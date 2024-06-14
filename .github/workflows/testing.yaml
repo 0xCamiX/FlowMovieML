@@ -31,10 +31,17 @@ jobs:
           pip install dvc-azure
           pip install -r api/requirements.txt
 
-      - name: Login to Azure
-        uses: azure/login@v1
+      - name: Azure login
+        uses: azure/login@v2.1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
 
       - name: Run tests
         run: |
