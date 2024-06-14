@@ -48,4 +48,5 @@ jobs:
         run: |
           source env/bin/activate
           dvc pull model/model.pkl -r model-track
+          dvc pull model/scaler.pkl -r model-track
           pytest tests/*_test.py
