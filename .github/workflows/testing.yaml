@@ -30,6 +30,7 @@ jobs:
           pip install dvc
           pip install dvc-azure
           pip install -r api/requirements.txt
+          pip install pytest
 
       - name: Azure login
         uses: azure/login@v2.1.1
