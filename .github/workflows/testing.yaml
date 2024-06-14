@@ -23,8 +23,9 @@ jobs:
       - name: Install dependencies
         shell: bash -l {0}
         run: |
-          conda install -c conda-forge dvc-azure
-          conda env update --file environment.yml --prune
+          conda install pip
+          pip install dvc-azure
+          pip install -r api/requirements.txt
 
       - name: Login to Azure
         uses: azure/login@v1
