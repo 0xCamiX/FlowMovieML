@@ -1,6 +1,7 @@
 name: FMM
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - anyio=4.2.0=py311hca03da5_0
   - appnope=0.1.2=py311hca03da5_1001
