@@ -26,10 +26,10 @@ jobs:
           conda install -c conda-forge dvc-azure
           conda env update --file environment.yml --prune
 
-      - name: Login Azure
+      - name: Login to Azure
         uses: azure/login@v1
         with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Run tests
         run: |
