@@ -13,12 +13,11 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Set up Conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: FMM
-          environment-file: environment.yml
-          auto-activate-base: false
+      - name: Creating and setup virtualenv
+        run: |
+          pip install virtualenv
+          virtualenv env
+          source venv/bin/activate
 
       - name: Install dependencies
         shell: bash -l {0}
