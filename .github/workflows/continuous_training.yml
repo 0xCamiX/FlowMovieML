@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - release/workflow-continuous-training/issue-01
+
   schedule:
     # Run each 6 hours
     - cron: '0 */6 * * *'
@@ -65,11 +66,11 @@ jobs:
           
           dvc repro -f
           echo "Model training completed"
-          dvc add model/model.pkl.dvc -r model-track --to-remote
-          dvc push model/model.pkl.dvc -r model-track
+          dvc add model/model.pkl -r model-track --to-remote
+          dvc push model/model.pkl -r model-track
           
-          dvc add model/scaler.pkl.dvc -r model-track --to-remote
-          dvc push model/scaler.pkl.dvc -r model-track
+          dvc add model/scaler.pkl -r model-track --to-remote
+          dvc push model/scaler.pkl -r model-track
 
       - name: Commit and push changes
         run: |
