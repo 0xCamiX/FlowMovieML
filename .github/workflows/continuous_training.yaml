@@ -1,9 +1,9 @@
-name: Continuous training
+name: Continuous Training
 
 on:
   push:
     branches:
-      - "release/workflow-continuous-training/issue-01"
+      - 'release/workflow-continuous-training/issue-01'
   schedule:
     # Run every 6 hours
     - cron: '0 */6 * * *'
