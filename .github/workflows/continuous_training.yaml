@@ -1,95 +1,52 @@
 name: Continuous Training
-
 on:
   push:
     branches:
-      - release/workflow-continuous-training/issue-01
+      - workflow_continuous_training
   schedule:
-    # Run every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
       reason:
-        description: Reason for running the workflow
+        description: Why to run this?
         required: false
-        default: Manually triggered
-
+        default: running CT
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
-
-    env:
-      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.11.9'
-
-      - name: Create and setup virtualenv
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Train model
+        env:
+          SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         run: |
-          python -m venv env
-          source env/bin/activate
-          pip install --upgrade pip
-
-      - name: Install dependencies
-        run: |
-          source env/bin/activate
-          pip install dvc
-          pip install dvc-azure
+          pip3 install virtualenv
+          virtualenv venv
+          source venv/bin/activate
           pip install -r src/requirements.txt
-
-      - name: Azure login
-        uses: azure/login@v2.1.1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
-      - name: Run train
-        run: |
-          source env/bin/activate
-          dvc pull model/model.pkl -r model-track
-          dvc pull model/scaler.pkl -r model-track
+          export GOOGLE_APPLICATION_CREDENTIALS=$(python utilities/setter.py)
+          dvc pull model/model.pkl.dvc -r model-tracker
           dvc unprotect model/model.pkl
-          dvc unprotect model/scaler.pkl
-          dvc repro -f
-          echo "Model training completed"
-          dvc add model/model.pkl -r model-track --to-remote
-          dvc push model/model.pkl -r model-track
-          dvc add model/scaler.pkl -r model-track --to-remote
-          dvc push model/scaler.pkl -r model-track
-
-      - name: Commit and push changes
+          dvc repro -f 
+          echo "Training Completed"
+          dvc add model/model.pkl -r model-tracker --to-remote
+          dvc push model/model.pkl.dvc -r model-tracker
+      - name: Commit .dvc file changes
         run: |
-          source env/bin/activate
-          git config --global user.email "juancamilogallego70@icloud.com"
-          git config --global user.name "github-actions[bot]"
+          git config --local user.email "ing.gersonp@gmail.com"
+          git config --local user.name "github-actions[bot]"
           git add model/model.pkl.dvc
-          git add model/scaler.pkl.dvc
-          git commit -m "chore: Update model serialized files"
-
-      - name: Push changes to repository
-        uses: ad-m/github-push-action@master
+          git commit -m "Updating model serialization"
+      - uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-
-      - name: Setup CML
-        uses: iterative/setup-cml@v1
-
+      - uses: iterative/setup-cml@v1
       - name: Push metrics
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          source env/bin/activate
-          cat report.txt >> report.md
-          cml-publish prediction_behavior_report.png --md >> report.md
+          cat report.txt >> report.md 
+          cml-publish prediction_behavior.png --md >> report.md
           cml-send-comment report.md
