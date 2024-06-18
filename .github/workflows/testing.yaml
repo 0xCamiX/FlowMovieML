@@ -1,20 +1,13 @@
-name: Continuous training
-on:
-  push:
-    branches:
-      - release/workflow-continuous-training/issue-01
-  schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Reason for running the workflow'
-        required: false
-        default: 'Manually triggered'
+name: Testing API
+
+on: [push, pull_request]
 
 jobs:
-  continuous-training:
+  testing-api:
     runs-on: ubuntu-latest
+
+    env:
+      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
 
     steps:
       - name: Checkout the repository
@@ -36,7 +29,8 @@ jobs:
           source env/bin/activate
           pip install dvc
           pip install dvc-azure
-          pip install -r src/requirements.txt
+          pip install -r api/requirements.txt
+          pip install pytest
 
       - name: Azure login
         uses: azure/login@v2.1.1
@@ -49,3 +43,10 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
+
+      - name: Run tests
+        run: |
+          source env/bin/activate
+          dvc pull model/model.pkl -r model-track
+          dvc pull model/scaler.pkl -r model-track
+          pytest tests/*_test.py
