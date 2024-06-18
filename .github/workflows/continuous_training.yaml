@@ -1,11 +1,9 @@
 name: Continuous training
-
 on:
   push:
     branches:
-      - "release/workflow-continuous-training/issue-01"
+      - 'release/workflow-continuous-training/issue-01'
   schedule:
-    # Run every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
@@ -17,9 +15,6 @@ on:
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
-
-    env:
-      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
 
     steps:
       - name: Checkout the repository
