@@ -39,6 +39,10 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+print(X_train.shape, X_test.shape)
+logger.info("Shape of X_train: %s", X_train.shape)
+logger.info("Shape of X_test: %s", X_test.shape)
+
 # PIPELINE
 
 model = Pipeline([

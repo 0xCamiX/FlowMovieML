@@ -25,7 +25,7 @@ def transform_dataframe(request: MoviePredictionRequest) -> pd.DataFrame:
     :param request:
     :return:
     """
-    dict_data = {key: [value] for key, value in request.dict().items()}
+    dict_data = {key: [value] for key, value in request.model_dump().items()}
     return pd.DataFrame(dict_data)
 
 

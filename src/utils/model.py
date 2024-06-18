@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 def update_model(model: Pipeline) -> None:
-    dump(model, "./model/models.pkl")
+    dump(model, "./model/model.pkl")
 
 
 def update_scaler(scaler: StandardScaler) -> None:
