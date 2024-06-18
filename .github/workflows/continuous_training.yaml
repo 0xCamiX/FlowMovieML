@@ -77,18 +77,16 @@ jobs:
           git add model/model.pkl.dvc
           git add model/scaler.pkl.dvc
           git commit -m "chore: Update model serialized files"
-
-      - name: Push changes to repository
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
 
+      - uses: iterative/setup-cml@v1
       - name: Push metrics
-        uses: iterative/setup-cml@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat report.txt >> report.md
-          cml-publish prediction_behavior_report.png --md >> report.md
+          cat report.txt >> report.md 
+          cml-publish prediction_behavior.png --md >> report.md
           cml-send-comment report.md
