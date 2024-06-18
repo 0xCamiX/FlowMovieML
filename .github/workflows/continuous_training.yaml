@@ -5,7 +5,7 @@ on:
     branches:
       - "release/workflow-continuous-training/issue-01"
   schedule:
-    # Run each 6 hours
+    # Run every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
@@ -13,8 +13,9 @@ on:
         description: 'Reason for running the workflow'
         required: false
         default: 'Manually triggered'
+
 jobs:
-  continous-training:
+  continuous-training:
     runs-on: ubuntu-latest
 
     env:
@@ -59,36 +60,35 @@ jobs:
           source env/bin/activate
           dvc pull model/model.pkl -r model-track
           dvc pull model/scaler.pkl -r model-track
-          
           dvc unprotect model/model.pkl
           dvc unprotect model/scaler.pkl
-          
           dvc repro -f
           echo "Model training completed"
           dvc add model/model.pkl -r model-track --to-remote
           dvc push model/model.pkl -r model-track
-          
           dvc add model/scaler.pkl -r model-track --to-remote
           dvc push model/scaler.pkl -r model-track
 
       - name: Commit and push changes
         run: |
+          source env/bin/activate
           git config --global user.email "juancamilogallego70@icloud.com"
           git config --global user.name "github-actions[bot]"
           git add model/model.pkl.dvc
           git add model/scaler.pkl.dvc
           git commit -m "chore: Update model serialized files"
 
-      - uses: ad-m/github-push-action@master
+      - name: Push changes to repository
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
 
-      - uses: iterative/setup-cml@v1
-        name: Push metrics
+      - name: Push metrics
+        uses: iterative/setup-cml@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            cat report.txt >> report.md
-            cml-publish prediction_behavior_report.png --md >> report.md
-            cml-send-comment report.md
+        run: |
+          cat report.txt >> report.md
+          cml-publish prediction_behavior_report.png --md >> report.md
+          cml-send-comment report.md
