@@ -3,16 +3,16 @@ name: Continuous Training
 on:
   push:
     branches:
-      - 'release/workflow-continuous-training/issue-01'
+      - release/workflow-continuous-training/issue-01
   schedule:
     # Run every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
       reason:
-        description: 'Reason for running the workflow'
+        description: Reason for running the workflow
         required: false
-        default: 'Manually triggered'
+        default: Manually triggered
 
 jobs:
   continuous-training:
