@@ -15,6 +15,9 @@ jobs:
   continuous-training:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -64,14 +67,20 @@ jobs:
           dvc push model/scaler.pkl -r model-track
 
       - name: Commit and push changes
-        run: |
-          source env/bin/activate
-          git config --global user.email "juancamilogallego70@icloud.com"
-          git config --global user.name "github-actions[bot]"
-          git add model/model.pkl.dvc
-          git add model/scaler.pkl.dvc
-          git commit -m "chore: Update model serialized files"
-        uses: ad-m/github-push-action@master
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
+          commit_message: 'chore: Update model serialized files'
+          commit_user_name: Juan Gallego [GitHub Actions]
+          commit_user_email: juancamilogallego70@icloud.com
+          commit_author: 0xCamiX
+
+      - name: Push metrics
+        uses: iterative/setup-cml@v2
+        run: |
+          cat reports/scores.txt >> reports/scores.md 
+          cml-publish model_performance.png --md >> report.md
+          cml-send-comment reports/report.md 
+
+
