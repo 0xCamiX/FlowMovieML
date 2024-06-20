@@ -1,5 +1,19 @@
 name: Continuous Training
-on: [push]
+
+on:
+  push:
+    branches:
+      - release/workflow-continuous-training
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: Why to run this?
+        required: false
+        default: running CT
+
+
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
@@ -68,11 +82,9 @@ jobs:
           commit_user_email: juancamilogallego70@icloud.com
           commit_author: 0xCamiX
 
-      - uses: iterative/setup-cml@v1
+      - uses: iterative/setup-cml@v2
       - name: Push metrics
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat reports/scores.txt >> reports/scores.md 
-          cml-publish model_performance.png --md >> reports/report.md
-          cml-send-comment reports/report.md 
+          echo "![](./model_performance.png)" >> reports/model_performance.md
+          cml comment create --publish reports/report.md```
