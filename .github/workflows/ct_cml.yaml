@@ -1,0 +1,47 @@
+name: Continuous Training
+on:
+  push:
+    branches: [ release/workflow-continuous-training/issue-01 ]
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running the workflow'
+        required: false
+        default: 'Manually triggered'
+
+jobs:
+  continuous-training:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+
+      - name: Create and setup virtualenv
+        run: |
+          python -m venv env
+          source env/bin/activate
+          pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          source env/bin/activate
+          pip install dvc
+          pip install dvc-azure
+          pip install -r src/requirements.txt
+          echo "Installed dependencies"
