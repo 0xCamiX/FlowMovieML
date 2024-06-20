@@ -1,16 +1,5 @@
 name: Continuous Training
-on:
-  push:
-    branches: [ release/workflow-continuous-training/issue-01 ]
-  schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Reason for running the workflow'
-        required: false
-        default: 'Manually triggered'
-
+on: [push]
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
