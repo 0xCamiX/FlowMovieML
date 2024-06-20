@@ -75,4 +75,4 @@ jobs:
         run: |
           cat reports/scores.txt >> reports/scores.md 
           echo "![](./model_performance.png)" >> reports/model_performance.md
-          cml comment create --publish reports/report.md```
+          cml comment create --publish reports/report.md
