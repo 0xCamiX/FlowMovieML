@@ -58,3 +58,13 @@ jobs:
           dvc push model/model.pkl -r model-track
           dvc add model/scaler.pkl -r model-track --to-remote
           dvc push model/scaler.pkl -r model-track
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          commit_message: 'chore: Update model serialized files'
+          commit_user_name: Juan Gallego [GitHub Actions]
+          commit_user_email: juancamilogallego70@icloud.com
+          commit_author: 0xCamiX
