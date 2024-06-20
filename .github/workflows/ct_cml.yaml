@@ -13,7 +13,6 @@ on:
         required: false
         default: running CT
 
-
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
