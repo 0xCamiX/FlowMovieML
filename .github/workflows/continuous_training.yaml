@@ -8,6 +8,7 @@ jobs:
     env:
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
 
+
     permissions:
       contents: write
 
@@ -72,6 +73,8 @@ jobs:
 
       - uses: iterative/setup-cml@v2
       - name: Push metrics
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat reports/scores.txt >> reports/scores.md 
           echo "![](./model_performance.png)" >> reports/model_performance.md
