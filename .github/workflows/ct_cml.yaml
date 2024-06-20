@@ -74,5 +74,5 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat reports/scores.txt >> reports/scores.md 
-          cml-publish model_performance.png --md >> report.md
+          cml-publish model_performance.png --md >> reports/report.md
           cml-send-comment reports/report.md 
