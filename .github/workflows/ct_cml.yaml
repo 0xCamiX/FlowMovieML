@@ -29,3 +29,30 @@ jobs:
           pip install dvc-azure
           pip install -r src/requirements.txt
           echo "Installed dependencies"
+          
+
+      - name: Azure login
+        uses: azure/login@v2.1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+
+      - name: Run train
+        run: |
+          source env/bin/activate
+          dvc pull model/model.pkl -r model-track
+          dvc pull model/scaler.pkl -r model-track
+          dvc unprotect model/model.pkl
+          dvc unprotect model/scaler.pkl
+          dvc repro -f
+          echo "Model training completed"
+          dvc add model/model.pkl -r model-track --to-remote
+          dvc push model/model.pkl -r model-track
+          dvc add model/scaler.pkl -r model-track --to-remote
+          dvc push model/scaler.pkl -r model-track
