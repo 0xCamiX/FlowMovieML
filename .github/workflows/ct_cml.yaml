@@ -1,5 +1,8 @@
 name: Continuous Training
-on: [push]
+on:
+  push:
+    branches:
+      - release/workflow-continuous-training/issue-01
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
@@ -68,7 +71,7 @@ jobs:
           commit_user_email: juancamilogallego70@icloud.com
           commit_author: 0xCamiX
 
-      - uses: iterative/setup-cml@v2
+      - uses: iterative/setup-cml@v1
       - name: Push metrics
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
