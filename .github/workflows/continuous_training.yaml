@@ -76,11 +76,11 @@ jobs:
           commit_user_email: juancamilogallego70@icloud.com
           commit_author: 0xCamiX
 
+      - uses: iterative/setup-cml@v2
       - name: Push metrics
-        uses: iterative/setup-cml@v2
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat reports/scores.txt >> reports/scores.md 
           cml-publish model_performance.png --md >> report.md
           cml-send-comment reports/report.md 
-
-
